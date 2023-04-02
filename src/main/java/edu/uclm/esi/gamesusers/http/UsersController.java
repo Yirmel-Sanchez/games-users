@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class UsersController {
 	private ValidatorData validatorData;
 	
 	@PostMapping("/register")
-	public void register(@RequestBody Map<String, Object> info) {
+	public ResponseEntity<String> register(@RequestBody Map<String, Object> info) {
 		String name = info.get("name").toString();
 		String email = info.get("email").toString();
 		String pwd1 = info.get("pwd1").toString();
@@ -48,10 +49,11 @@ public class UsersController {
 			throw new ResponseStatusException(HttpStatus.CONFLICT);
 		}
 		
+		return new ResponseEntity<>("Registro exitoso", HttpStatus.OK);
 		
 	}
 	@PutMapping("/login")
-	public void login(@RequestBody Map<String, Object> info) {
+	public ResponseEntity<String> login(@RequestBody Map<String, Object> info) {
 		String name = info.get("name").toString();
 		String pwd = info.get("pwd").toString();
 		
@@ -61,6 +63,7 @@ public class UsersController {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
 		
+		return new ResponseEntity<>("Login exitoso", HttpStatus.OK);
 		
 	}
 }

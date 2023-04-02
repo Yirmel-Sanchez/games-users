@@ -31,7 +31,6 @@ import edu.uclm.esi.gamesusers.dao.UserDAO;
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation.class)
 public class TestUser {
-	
 	@Autowired
 	private MockMvc server;
 	@Autowired
@@ -39,29 +38,36 @@ public class TestUser {
 	@Test @Order(1)
 	void testRegister() throws Exception {
 		this.userDAO.deleteAll();
+		//Registro exitoso
 		ResultActions result = this.sendRequest("Pepe", "pepe@pepe.com", "pepe1234", "pepe1234");
 		result.andExpect(status().isOk()).andReturn();
-		
+		//Ya existe el usuario
 		result = this.sendRequest("Pepe", "pepe@pepe.com", "pepe1234", "pepe1234");
 		result.andExpect(status().isConflict()).andReturn();
-		
+		//Correo invalido
+		result = this.sendRequest("Pepe", "pepepepe.com", "pepe1234", "pepe1234");
+		result.andExpect(status().isNotAcceptable()).andReturn();
+		//Contraseñas desiguales
 		result = this.sendRequest("Ana", "ana@ana.com", "ana123", "ana1234");
 		result.andExpect(status().isNotAcceptable()).andReturn();
 		
 		result = this.sendRequest("Ana", "ana@ana.com", "ana123", "ana1234");
 		result.andExpect(status().is(406)).andReturn();
-		
+		//Registro exitoso
 		result = this.sendRequest("Ana", "ana@ana.com", "ana1234", "ana1234");
 		result.andExpect(status().isOk()).andReturn();
-			}
+	}
 	
 	
 	@Test @Order(2)
 	void testLogin() throws Exception {
 		ResultActions result = this.sendLogin("Pepe", "pepe1234");
 		result.andExpect(status().is(200)).andReturn();
-		
+		//No es la contraseña
 		result = this.sendLogin("Ana", "******");
+		result.andExpect(status().is(403)).andReturn();
+		//Nombre no encontrado en la base de datos
+		result = this.sendLogin("NoExiste", "ana1234");
 		result.andExpect(status().is(403)).andReturn();
 		
 		result = this.sendLogin("Ana", "ana1234");
