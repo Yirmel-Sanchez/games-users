@@ -29,6 +29,7 @@ public class User {
 	private String email;
 	@NotEmpty
 	private String pwd;
+	private Long validationDate;
 	
 	public User() {
 		this.id = UUID.randomUUID().toString();
