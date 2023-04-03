@@ -29,8 +29,10 @@ public class User {
 	private String email;
 	@NotEmpty
 	private String pwd;
+	
 	private Long validationDate;
 	
+
 	public User() {
 		this.id = UUID.randomUUID().toString();
 	}
@@ -66,6 +68,12 @@ public class User {
 	public void setPwd(String pwd) {
 		this.pwd = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd); 
 	}
-	
+	public Long getValidationDate() {
+		return validationDate;
+	}
+
+	public void setValidationDate(Long validationDate) {
+		this.validationDate = validationDate;
+	}
 	
 }
