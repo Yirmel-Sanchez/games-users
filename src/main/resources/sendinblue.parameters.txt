@@ -2,12 +2,12 @@
     "endpoint" : "https://api.sendinblue.com/v3/smtp/email",
     "headers" : [
         "accept : application/json",
-        "api-key : xpUSG540W3zNJjOv",
+        "api-key : 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",
         "content-type : application/json"
     ],
     "sender" : {
         "name" : "Cuenta",
         "email" : "JoseYirmelAntonio@gmail.com"
     },
-    "subject" : "Confirmación de cuenta"
+    "subject" : "Confirmacion de cuenta"
 }

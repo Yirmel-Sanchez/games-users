@@ -27,7 +27,7 @@ public class User {
 	private String name;
 	@Column (length = 140) @NotEmpty
 	private String email;
-	@NotEmpty
+	@NotEmpty 
 	private String pwd;
 	
 	private Long validationDate;

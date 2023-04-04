@@ -4,9 +4,9 @@
 Gracias por registrarte en nuestro sistema de juegos.
 </p>
 <p>
-Por, favor, haz clic <a
-href="http://localhost/users/confirm/#TOKEN#">aquí</a> para
-confirmar la creación de tu cuenta y poder acceder a todos nuestros
+Por favor, haz clic <a
+href="http://localhost/users/confirm/#TOKEN#">aqui</a> para
+confirmar la creacion de tu cuenta y poder acceder a todos nuestros
 servicios.
 </p>
 </body>

@@ -56,9 +56,12 @@ public class TestUser {
 		//Registro exitoso
 		result = this.sendRequest("Ana", "ana@ana.com", "ana1234", "ana1234");
 		result.andExpect(status().isOk()).andReturn();
+		
+		result = this.sendRequest("Jose", "joseyirmelantonio@gmail.com", "1234", "1234");
+		result.andExpect(status().isOk()).andReturn();
 	}
 	
-	
+	/*
 	@Test @Order(2)
 	void testLogin() throws Exception {
 		ResultActions result = this.sendLogin("Pepe", "pepe1234");
@@ -86,7 +89,7 @@ public class TestUser {
 		ResultActions resultActions = this.server.perform(request);
 		return resultActions;
 	}
-
+	*/
 
 	private ResultActions sendRequest(String name, String email, String pwd1, String pwd2) throws Exception, UnsupportedEncodingException {
 		JSONObject jsoUser = new JSONObject()

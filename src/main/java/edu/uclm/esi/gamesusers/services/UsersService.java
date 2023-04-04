@@ -26,6 +26,7 @@ public class UsersService {
 	
 	@Autowired
 	private TokenDAO tokenDAO;
+	
 	@Transactional
 	public void register(String name, String email, String pwd) throws IOException {
 		User user = new User();
@@ -34,6 +35,7 @@ public class UsersService {
 		user.setPwd(pwd);
 		
 		Token token = new Token();
+		token.setUser(user);
 		this.userDAO.save(user);
 		this.tokenDAO.save(token);
 		

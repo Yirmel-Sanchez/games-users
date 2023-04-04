@@ -49,17 +49,18 @@ public class UsersController {
 		try {
 			this.usersService.register(name, email, pwd1);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Cosas");
 		}
 		
 		return new ResponseEntity<>("Registro exitoso", HttpStatus.OK);
 		
 	}
+	
 	@GetMapping("/confirm/{tokenId}")
 	public void confirm(HttpServletResponse response, @PathVariable String tokenId) {
 		try {
 			this.usersService.confirm(tokenId);
-			response.sendRedirect("http://localhost:80/users");
+			response.sendRedirect("http://localhost:4200/");
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
 		}
