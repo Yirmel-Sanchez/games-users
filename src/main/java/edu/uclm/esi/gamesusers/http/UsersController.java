@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import com.github.openjson.JSONObject;
 
 import edu.uclm.esi.gamesusers.entities.User;
 import edu.uclm.esi.gamesusers.services.UsersService;
@@ -52,7 +53,9 @@ public class UsersController {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Cosas");
 		}
 		
-		return new ResponseEntity<>("Registro exitoso", HttpStatus.OK);
+		JSONObject response = new JSONObject();
+	    	response.put("message", "Registro exitoso");
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		
 	}
 	
