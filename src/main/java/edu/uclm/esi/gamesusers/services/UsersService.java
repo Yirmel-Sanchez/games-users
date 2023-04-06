@@ -99,6 +99,9 @@ public class UsersService {
 		if (!user.getPwd().equals(pwdEncripted))
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales inválidas");
 		
+		if (user.getValidationDate()==null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario sin activar");
+		
 		return user;
 		
 	}
