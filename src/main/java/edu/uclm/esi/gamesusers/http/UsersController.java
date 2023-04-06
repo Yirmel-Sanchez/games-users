@@ -21,6 +21,7 @@ import edu.uclm.esi.gamesusers.entities.User;
 import edu.uclm.esi.gamesusers.services.UsersService;
 import edu.uclm.esi.gamesusers.services.ValidatorData;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("users")
