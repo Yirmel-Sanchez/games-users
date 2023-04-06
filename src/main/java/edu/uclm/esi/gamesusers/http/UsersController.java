@@ -74,15 +74,11 @@ public class UsersController {
 		String name = info.get("name").toString();
 		String pwd = info.get("pwd").toString();
 		
-		User user = this.usersService.login(name, pwd);
-		
-		if (user==null || user.getValidationDate()==null)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales inválidas");
-
 		try {
-			this.usersService.login(name, pwd);
+			User user = this.usersService.login(name, pwd);
+			session.setAttribute("userId", user.getId());
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw e;
 		}
 		
 		return new ResponseEntity<>("Login exitoso", HttpStatus.OK);
