@@ -30,6 +30,10 @@ public class User {
 	@NotEmpty
 	private String pwd;
 	
+	private Long validationDate;
+	
+	private double saldo; 
+	
 	public User() {
 		this.id = UUID.randomUUID().toString();
 	}
@@ -66,5 +70,20 @@ public class User {
 		this.pwd = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd); 
 	}
 	
+	public Long getValidationDate() {
+		return validationDate;
+	}
+
+	public void setValidationDate(Long validationDate) {
+		this.validationDate = validationDate;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
 	
 }

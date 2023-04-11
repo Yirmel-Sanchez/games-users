@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import com.github.openjson.JSONObject;
 
+import edu.uclm.esi.gamesusers.entities.User;
 import edu.uclm.esi.gamesusers.services.UsersService;
 import edu.uclm.esi.gamesusers.services.ValidatorData;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("users")
-@CrossOrigin("*") //Esto se pone al ser un método POST y PUT
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") //Esto se pone al ser un método POST y PUT
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
@@ -46,24 +51,45 @@ public class UsersController {
 		try {
 			this.usersService.register(name, email, pwd1);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Cosas");
 		}
 		
-		return new ResponseEntity<>("Registro exitoso", HttpStatus.OK);
+		JSONObject response = new JSONObject();
+	    response.put("message", "Registro exitoso");
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		
 	}
+	
+	@GetMapping("/confirm/{tokenId}")
+	public void confirm(HttpServletResponse response, @PathVariable String tokenId) {
+		try {
+			this.usersService.confirm(tokenId);
+			response.sendRedirect("http://localhost:4200/");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+		}
+	}
+	
 	@PutMapping("/login")
-	public ResponseEntity<String> login(@RequestBody Map<String, Object> info) {
+	public ResponseEntity<String> login(HttpSession session, @RequestBody Map<String, Object> info) {
 		String name = info.get("name").toString();
 		String pwd = info.get("pwd").toString();
-		
+		User user;
 		try {
-			this.usersService.login(name, pwd);
+			user = this.usersService.login(name, pwd);
+			session.setAttribute("userId", user.getId());
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw e;
 		}
 		
-		return new ResponseEntity<>("Login exitoso", HttpStatus.OK);
+		JSONObject response = new JSONObject();
+	    response.put("message", "Login exitoso");
+	    response.put("userId", user.getId());
+	    response.put("userName", user.getName());
+	    response.put("userBalance", user.getSaldo());
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		
 	}
+	
+	
 }

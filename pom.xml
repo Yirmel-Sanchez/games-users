@@ -35,11 +35,6 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20220924</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -54,6 +49,12 @@
 			<version>5.9.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+        	<groupId>com.github.openjson</groupId>
+        	<artifactId>openjson</artifactId> <!-- Cambiado ya que org.json me daba problemas con un archivo -->
+        	<version>1.0.12</version>
+    	</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -87,6 +88,11 @@
 			<groupId>com.stripe</groupId>
 			<artifactId>stripe-java</artifactId>
 			<version>22.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wso2.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.1.wso2v1</version>
 		</dependency>
 	</dependencies>
 
