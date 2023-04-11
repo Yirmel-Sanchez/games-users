@@ -58,6 +58,8 @@ public class PaymentsController {
 			String clientSecret = jso.getString("client_secret");
 			session.setAttribute("client_secret", clientSecret);
 			session.setAttribute("cantidad", cant);
+			session.setAttribute("payment_intent_id", intent.getId());
+			//System.out.println(intent.getId()); //borrar est *******************************************
 			return clientSecret;
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -66,16 +68,29 @@ public class PaymentsController {
 	}
 
 	@GetMapping("/confirm")
-	public ResponseEntity<String> confirm(@RequestBody Map<String, Object> info, HttpSession session) {
+	public ResponseEntity<String> confirm(HttpSession session) {
 		try {
 			if (session.getAttribute("client_secret") == null || session.getAttribute("cantidad") == null
-					|| session.getAttribute("userId") == null)
+					|| session.getAttribute("userId") == null || session.getAttribute("payment_intent_id") == null)
 				throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-			String userId = session.getAttribute("userId").toString();
-			this.usersService.updateBalance(userId, (Integer) session.getAttribute("cantidad"));
+			
+			PaymentIntent paymentIntent = PaymentIntent.retrieve(session.getAttribute("payment_intent_id").toString());
+			String paymentIntentId = paymentIntent.getId();
+			
+			paymentIntent = PaymentIntent.retrieve(paymentIntentId);
+
+			if ("succeeded".equals(paymentIntent.getStatus())) {
+				String userId = session.getAttribute("userId").toString();
+				this.usersService.updateBalance(userId, (Integer) session.getAttribute("cantidad"));
+				session.removeAttribute("client_secret");
+				session.removeAttribute("cantidad");
+			} else {
+				throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "El pago no ha sido confirmado");
+			}
 		}catch(IllegalArgumentException iae) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encuentra el usuario con el id solicitado");
 		}catch(Exception e) {
+			//e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al confirmar el pago");
 		}
 		

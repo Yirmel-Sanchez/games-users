@@ -127,4 +127,15 @@ public class UsersService {
 		
 	}
 
+
+	public double getBalance(String userId) {
+		Optional<User> userOptional = this.userDAO.findById(userId);
+		if (userOptional.isPresent()) {
+	        User user = userOptional.get();
+	        return user.getSaldo();
+	    } else {
+	        throw new IllegalArgumentException("No se ha encontrado el usuario con id: " + userId);
+	    }
+	}
+
 }

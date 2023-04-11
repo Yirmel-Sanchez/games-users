@@ -91,5 +91,18 @@ public class UsersController {
 		
 	}
 	
-	
+	@GetMapping("/balance/{userId}")
+	public ResponseEntity<String> getBalance(HttpSession session,  @PathVariable String userId) {
+		double saldo;
+		try {
+			saldo = this.usersService.getBalance(userId);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "No se ha podido consultar el saldo");
+		}
+		JSONObject response = new JSONObject();
+	    response.put("message", "consulta exitosa");
+	    response.put("userBalance", saldo);
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+	}
+
 }
