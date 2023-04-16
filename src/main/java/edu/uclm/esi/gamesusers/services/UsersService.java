@@ -128,13 +128,25 @@ public class UsersService {
 	}
 
 
-	public double getBalance(String userId) {
+	public User getUser(String userId) {
 		Optional<User> userOptional = this.userDAO.findById(userId);
 		if (userOptional.isPresent()) {
 	        User user = userOptional.get();
-	        return user.getSaldo();
+	        return user;
 	    } else {
 	        throw new IllegalArgumentException("No se ha encontrado el usuario con id: " + userId);
+	    }
+	}
+
+
+	public void payGame(String idPlayer, double amount) {
+		Optional<User> userOptional = this.userDAO.findById(idPlayer);
+		if (userOptional.isPresent()) {
+	        User user = userOptional.get();
+	        user.setSaldo(user.getSaldo() - amount); // Update balance with the provided attribute
+	        this.userDAO.save(user); // Save the updated user entity to the database
+	    } else {
+	        throw new IllegalArgumentException("No se ha encontrado el usuario con id: " + idPlayer);
 	    }
 	}
 

@@ -1,5 +1,6 @@
 package edu.uclm.esi.gamesusers.http;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,16 +94,40 @@ public class UsersController {
 	
 	@GetMapping("/balance/{userId}")
 	public ResponseEntity<String> getBalance(HttpSession session,  @PathVariable String userId) {
-		double saldo;
+		User user;
 		try {
-			saldo = this.usersService.getBalance(userId);
+			user = this.usersService.getUser(userId);
+			
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "No se ha podido consultar el saldo");
 		}
+		
+		DecimalFormat df = new DecimalFormat("#.##");
+		String saldo = df.format(user.getSaldo());
+		
 		JSONObject response = new JSONObject();
 	    response.put("message", "consulta exitosa");
-	    response.put("userBalance", saldo);
+	    response.put("userBalance", Double.parseDouble(saldo));
+	    response.put("userName", user.getName());
 		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/payGame")
+	public ResponseEntity<String> restarSaldo(@RequestBody Map<String, Object> requestBody) {
+	    String idPlayer = (String) requestBody.get("idPlayer");
+	    double amount = (double) requestBody.get("amount");
+
+	    // Obtener el usuario con el idPlayer y restar el saldo
+	    try {
+			this.usersService.payGame(idPlayer, amount);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "No se ha podido restar el saldo");
+		}
+
+	    // Devolver la respuesta JSON con la operación realizada con éxito
+	    JSONObject responseBody = new JSONObject();
+	    responseBody.put("success", true);
+	    return ResponseEntity.ok(responseBody.toString());
 	}
 
 }
