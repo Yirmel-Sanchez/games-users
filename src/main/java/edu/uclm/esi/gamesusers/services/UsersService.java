@@ -37,6 +37,22 @@ public class UsersService {
 		Token token = new Token();
 		token.setUser(user);
 		System.out.println("Antes de guardar");
+		//Caso de uso de volvernos a registrar con un nombre o un correo que ya existe
+		// pero la cuenta está aún sin confirmar
+		if (this.userDAO.findByEmail(email)!= null)  {
+			User userFoundByEmail = this.userDAO.findByEmail(email);
+			this.tokenDAO.deleteByUserId(userFoundByEmail.getId());
+			if(userFoundByEmail.getValidationDate()==null) {
+				this.userDAO.deleteByUserId(userFoundByEmail.getId());
+			}
+		}
+		if (this.userDAO.findByName(name)!= null)  {
+			User userFoundByName = this.userDAO.findByName(name);
+			this.tokenDAO.deleteByUserId(userFoundByName.getId());
+			if(userFoundByName.getValidationDate()==null) {
+				this.userDAO.deleteByUserId(userFoundByName.getId());
+			}
+		}
 		this.userDAO.save(user);
 		this.tokenDAO.save(token);
 		System.out.println("despues de guardar");

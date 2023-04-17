@@ -2,6 +2,7 @@ package edu.uclm.esi.gamesusers.entities;
 
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
@@ -17,7 +18,7 @@ public class Token {
 	
 	private long time;
 	
-	@ManyToOne
+	@ManyToOne //(cascade = CascadeType.ALL) No hacer caso pero tenerlo ahí por si acaso hace falta
 	private User user;
 	
 	public Token() {
