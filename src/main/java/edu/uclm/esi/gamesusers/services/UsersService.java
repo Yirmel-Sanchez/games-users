@@ -36,6 +36,7 @@ public class UsersService {
 		
 		Token token = new Token();
 		token.setUser(user);
+
 		//System.out.println("Antes de guardar");
 		this.userDAO.save(user);
 		this.tokenDAO.save(token);

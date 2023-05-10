@@ -103,11 +103,11 @@ public class UsersController {
 		}
 		
 		DecimalFormat df = new DecimalFormat("#.##");
-		String saldo = df.format(user.getSaldo());
+		//String saldo = df.format(user.getSaldo());
 		
 		JSONObject response = new JSONObject();
 	    response.put("message", "consulta exitosa");
-	    response.put("userBalance", Double.parseDouble(saldo));
+	    response.put("userBalance", user.getSaldo());
 	    response.put("userName", user.getName());
 		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 	}
