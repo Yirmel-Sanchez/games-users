@@ -36,10 +36,10 @@ public class UsersService {
 		
 		Token token = new Token();
 		token.setUser(user);
-		System.out.println("Antes de guardar");
+		//System.out.println("Antes de guardar");
 		this.userDAO.save(user);
 		this.tokenDAO.save(token);
-		System.out.println("despues de guardar");
+		//System.out.println("despues de guardar");
 		
 		try {
 			this.sendEmail(user, token);
@@ -52,7 +52,7 @@ public class UsersService {
 	}
 	
 
-	private void sendEmail(User user, Token token) throws IOException {
+	public void sendEmail(User user, Token token) throws IOException {
 		
 		String body = Manager.get().readFile("welcome.html.txt");
 		body = body.replace("#TOKEN#", token.getId());
@@ -105,7 +105,8 @@ public class UsersService {
 		
 		String pwdEncripted = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd);
 		if (!user.getPwd().equals(pwdEncripted))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales inválidas");
+			//throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales inválidas");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, org.apache.commons.codec.digest.DigestUtils.sha512Hex("secret123"));
 		
 		if (user.getValidationDate()==null)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario sin activar");

@@ -59,7 +59,6 @@ public class PaymentsController {
 			session.setAttribute("client_secret", clientSecret);
 			session.setAttribute("cantidad", cant);
 			session.setAttribute("payment_intent_id", intent.getId());
-			//System.out.println(intent.getId()); //borrar est *******************************************
 			return clientSecret;
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -71,7 +70,7 @@ public class PaymentsController {
 	public ResponseEntity<String> confirm(HttpSession session) {
 		try {
 			if (session.getAttribute("client_secret") == null || session.getAttribute("cantidad") == null
-					|| session.getAttribute("userId") == null || session.getAttribute("payment_intent_id") == null)
+				|| session.getAttribute("userId") == null || session.getAttribute("payment_intent_id") == null)
 				throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 			
 			PaymentIntent paymentIntent = PaymentIntent.retrieve(session.getAttribute("payment_intent_id").toString());
@@ -91,7 +90,8 @@ public class PaymentsController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encuentra el usuario con el id solicitado");
 		}catch(Exception e) {
 			//e.printStackTrace();
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al confirmar el pago");
+			//throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al confirmar el pago");
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		
 		JSONObject response = new JSONObject();

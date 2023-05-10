@@ -115,7 +115,8 @@ public class UsersController {
 	@PostMapping("/payGame")
 	public ResponseEntity<String> restarSaldo(@RequestBody Map<String, Object> requestBody) {
 	    String idPlayer = (String) requestBody.get("idPlayer");
-	    double amount = (double) requestBody.get("amount");
+	    double amount = Double.parseDouble(requestBody.get("amount").toString());
+	    
 
 	    // Obtener el usuario con el idPlayer y restar el saldo
 	    try {
